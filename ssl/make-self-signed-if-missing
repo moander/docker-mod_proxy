@@ -1,0 +1,20 @@
+#!/bin/bash
+
+certdir=/usr/local/apache2/certs
+
+mkdir $certdir && cd $certdir
+
+cn=
+if test -f ../conf.d/default.conf ; then
+	cn=$(cat ../conf.d/default.conf | perl -n -e'/^\s*ServerName\s+([\w.]+)/ && print $1' | tail -n1)
+fi
+
+if [ ! "$cn" ] ; then
+	cn=ldock.net
+fi
+
+if ! test -f server.key && ! test -f server.crt ; then
+	echo "Generating self-signed certificate.."
+	openssl req -subj "/CN=${cn}/O=Self Signed/C=US" -new -newkey rsa:2048 -days 365 -nodes -x509 -sha256 -keyout server.key -out server.crt
+fi
+
