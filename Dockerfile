@@ -1,9 +1,13 @@
 FROM httpd:2.4
 
-RUN apt-get update && apt-get install -y --no-install-recommends nano \
+RUN apt-get update && apt-get install -y --no-install-recommends \
+	ca-certificates \
+	curl \
+	nano \
  && rm -rf /var/lib/apt/lists/*
 
-RUN mv /usr/local/apache2/conf /usr/local/apache2/originalconf
+RUN rm -rf /usr/local/apache2/conf \
+ && rm -rf /usr/local/apache2/htdocs
 
 COPY ./apache2 /usr/local/apache2
 

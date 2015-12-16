@@ -6,3 +6,7 @@ build:
 
 run: build
 	docker run -it -p "1080:1080" ${imgname}
+
+push: build
+	docker push ${imgname}
+
